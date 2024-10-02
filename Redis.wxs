@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Package Name="Redis-Windows"
+           Manufacturer="Ascensio System SIA"
+           Version="7.4.0"
+           UpgradeCode="05410198-7212-4FC4-B7C8-AFEFC3DA0FBC"
+           Compressed="true"
+           InstallerVersion="200">
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+
+    <MediaTemplate EmbedCab="yes" />
+
+          <StandardDirectory Id="ProgramFiles64Folder">
+            <Directory Id="INSTALLFOLDER" Name="!(bind.Property.ProductName)" />
+          </StandardDirectory>
+
+    <ComponentGroup Id="RedisServiceComponents" Directory="INSTALLFOLDER">
+      <Component Id="ServiceExecutable">
+        <File Source="RedisService.exe" />
+
+        <ServiceInstall Id="ServiceInstaller"
+                        Type="ownProcess"
+                        Name="Redis"
+                        DisplayName="Redis"
+                        Description="Redis"
+                        Start="auto"
+                        ErrorControl="normal" />
+
+        <ServiceControl Id="StartService"
+                        Start="install"
+                        Stop="both"
+                        Remove="uninstall"
+                        Name="Redis"
+                        Wait="true" />
+      </Component>
+    </ComponentGroup>
+         <ComponentGroup Id="RedisComponents" Directory="INSTALLFOLDER">
+                <Files Include="*.dll" />
+                <Files Include="*.conf" />
+                <File Source="redis-benchmark.exe" />
+                <File Source="redis-check-aof.exe" />
+                <File Source="redis-check-rdb.exe" />
+                <File Source="redis-cli.exe" />
+                <File Source="redis-sentinel.exe" />
+                <File Source="redis-server.exe" />
+         </ComponentGroup>
+
+    <Feature Id="Redis">
+      <ComponentGroupRef Id="RedisServiceComponents"/>
+      <ComponentGroupRef Id="RedisComponents"/>
+    </Feature>
+  </Package>
+</Wix>
