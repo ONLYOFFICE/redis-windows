@@ -43,6 +43,7 @@
                 <File Source="redis-cli.exe" />
                 <File Source="redis-sentinel.exe" />
                 <File Source="redis-server.exe" />
+                <File Source="LICENSE" />
          </ComponentGroup>
 
     <Feature Id="Redis">
